@@ -14,6 +14,10 @@ public class PlayerMove : MonoBehaviour
 
     private bool isMoving = true;
 
+    public GameSystem gameSystem;
+    public int needleDamage = 5;
+    public int enemyDamage = 20;
+
     void Start()
     {
         controller = gameObject.AddComponent<CharacterController>();
@@ -23,7 +27,6 @@ public class PlayerMove : MonoBehaviour
     {
         if (isMoving)
         {
-            Debug.Log(transform.position);
             moveFB = Input.GetAxis("Vertical") * speed;
             moveLR = Input.GetAxis("Horizontal") * speed;
 
@@ -46,5 +49,17 @@ public class PlayerMove : MonoBehaviour
     public void SetIsMoving(bool value)
     {
         isMoving = value;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Needle")
+        {
+            gameSystem.HitDamage(needleDamage);
+        }
+        else if (other.gameObject.tag == "Enemy")
+        {
+            gameSystem.HitDamage(enemyDamage);
+        }
     }
 }
